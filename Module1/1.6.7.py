@@ -35,31 +35,49 @@ classes = [  # список введённых строк
 
 questions = [  # список введённых запросов
     'A G',      # Yes   # A предок G через B/C, D, F
-    'A Z',      # No    # Y потомок A, но не Y
-    'A W',      # Yes   # A предок W через Y, V
-    'X W',      # Yes   # X предок W через Y, V
-    'X QWE',    # No    # нет такого класса QWE
-    'A X',      # No    # классы есть, но они нет родства :)
-    'X X',      # Yes   # родитель он же потомок
-    '1 1',      # No    # несуществующий класс
+    # 'A Z',      # No    # Y потомок A, но не Y
+    # 'A W',      # Yes   # A предок W через Y, V
+    # 'X W',      # Yes   # X предок W через Y, V
+    # 'X QWE',    # No    # нет такого класса QWE
+    # 'A X',      # No    # классы есть, но они нет родства :)
+    # 'X X',      # Yes   # родитель он же потомок
+    # '1 1',      # No    # несуществующий класс
 ]
 
 
-def check_inheretion(child, parent):
-    for c in classes:
-        if len(c) > 1:
-            clfirst, clsecond = c.split(':')
-            if clfirst == child and parent in clsecond:
-                return True
-            else:
-                return check_inheretion(clfirst, parent)
+# def check_inheretion(child, parent):
+#     for c in classes:
+#         if len(c) > 1:
+#             clfirst, clsecond = c.split(':')
+#             if clfirst == child and parent in clsecond:
+#                 return True
+#             else:
+#                 return check_inheretion(clfirst, parent)
+
+
+def check_inheretion(parent, child):
+    if child == parent:
+        return True
+    else:
+        new = [parent + " : " + child]
+        for cl in classes:
+            if cl == new:     
+                return check_inheretion(child)
+    # if variables.get(namespace) is not None:
+    #     if var in variables.get(namespace):
+    #         return namespace
+    #     else:
+    #         return check_inheretion(namespaces.get(namespace), var)
+    # else:
+    #     return check_inheretion(child, var)
 
 
 for i in questions:
-    child, parent = i.split()
+    parent, child = i.split()
     if child == parent:
         print('Yes')
-    elif check_inheretion(child, parent):
+    elif check_inheretion(parent, child):
         print('Yes')
     else:
         print('No')
+
