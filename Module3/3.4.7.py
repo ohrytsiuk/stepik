@@ -1,10 +1,17 @@
-html = """
-<a href="http://stepic.org/courses">
-<a href='https://stepic.org'>
-<a href='http://neerc.ifmo.ru:1345'>
-<a href="ftp://mail.ru/distib" >
-<a href="ya.ru">
-<a href="www.ya.ru">
-<a href="../skip_relative_links">
-"""
+import requests
+import re
 
+# url = input()
+url = 'http://pastebin.com/raw/hfMThaGb'
+
+pattern = r"<a.+href\s?=\s?[\'|\"](\w+://)?(\w+[\.|\-|\d+|\w+]+)([\:|\"|\'\/])"
+
+addresses = set()
+
+answer = requests.get(url)
+
+for match in re.findall(pattern, answer.text):
+    addresses.add(match[1])
+
+for addr in sorted(addresses):
+    print(addr)

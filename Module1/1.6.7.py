@@ -34,9 +34,9 @@ classes = [  # список введённых строк
 ]
 
 questions = [  # список введённых запросов
-    'A G',      # Yes   # A предок G через B/C, D, F
+    # 'A G',      # Yes   # A предок G через B/C, D, F
     # 'A Z',      # No    # Y потомок A, но не Y
-    # 'A W',      # Yes   # A предок W через Y, V
+    'A W',      # Yes   # A предок W через Y, V
     # 'X W',      # Yes   # X предок W через Y, V
     # 'X QWE',    # No    # нет такого класса QWE
     # 'A X',      # No    # классы есть, но они нет родства :)
@@ -56,21 +56,20 @@ questions = [  # список введённых запросов
 
 
 def check_inheretion(parent, child):
-    if child == parent:
-        return True
-    else:
-        new = [parent + " : " + child]
-        for cl in classes:
-            if cl == new:     
-                return check_inheretion(child)
-    # if variables.get(namespace) is not None:
-    #     if var in variables.get(namespace):
-    #         return namespace
-    #     else:
-    #         return check_inheretion(namespaces.get(namespace), var)
-    # else:
-    #     return check_inheretion(child, var)
-
+    n=1
+    for cl in classes:
+        if child == parent:
+            return True
+        if len(cl) == 1:
+            continue
+        new_parent = cl.split(':')[0].strip()
+        new_child = cl.split(':')[1].strip()
+        if parent in new_child and child in new_parent:
+            continue
+        child_list = new_child.split()
+        if new_parent in child or new_parent in parent:
+            for ch in child_list:
+                check_inheretion(ch, new_parent)
 
 for i in questions:
     parent, child = i.split()
